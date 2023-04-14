@@ -13,6 +13,6 @@ void setup()
 
 void loop()
 {
-  lv_handler();  // Updates UI
-  update_time(); // Updates time and date on UI
+  lv_handler();  // Update UI
+  update_time(); // Update time and date on UI
 }
