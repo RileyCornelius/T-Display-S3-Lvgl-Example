@@ -1265,7 +1265,7 @@
                       {
                         "nid": -1326066897,
                         "strtype": "SET OPACITY/Value",
-                        "integer": 100,
+                        "integer": 255,
                         "InheritedType": 6
                       }
                     ],
@@ -1509,7 +1509,27 @@
           },
           {
             "part": "lv.PART.MAIN",
-            "childs": [],
+            "childs": [
+              {
+                "nid": -446650450,
+                "strtype": "_style/StyleState",
+                "strval": "DEFAULT",
+                "childs": [
+                  {
+                    "nid": -1186055242,
+                    "strtype": "_style/Bg_Color",
+                    "intarray": [
+                      255,
+                      255,
+                      255,
+                      255
+                    ],
+                    "InheritedType": 7
+                  }
+                ],
+                "InheritedType": 1
+              }
+            ],
             "nid": 1241786242,
             "strtype": "SCREEN/Style_main",
             "strval": "lv.PART.MAIN, Rectangle, Pad, Text",
@@ -1561,7 +1581,7 @@
     "theme_color2": 0,
     "exportFolderPath": "C:\\Projects\\01-Current\\LVGL\\T-Display-S3-Lvgl-Example\\src\\ui",
     "projectExportFolderPath": "C:\\Projects\\01-Current\\LVGL\\T-Display-S3-Lvgl-Example\\ui_square_line\\export",
-    "backup_cnt": 17,
+    "backup_cnt": 18,
     "autosave_cnt": 0,
     "lvgl_version": "8.3.4",
     "callfuncsexport": "DONT_EXPORT",
