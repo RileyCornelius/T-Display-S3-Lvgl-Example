@@ -539,6 +539,7 @@ void lv_chart_set_next_value(lv_obj_t * obj, lv_chart_series_t * ser, lv_coord_t
     invalidate_point(obj, ser->start_point);
     ser->start_point = (ser->start_point + 1) % chart->point_cnt;
     invalidate_point(obj, ser->start_point);
+    lv_chart_refresh(obj);
 }
 
 void lv_chart_set_next_value2(lv_obj_t * obj, lv_chart_series_t * ser, lv_coord_t x_value, lv_coord_t y_value)
@@ -555,8 +556,11 @@ void lv_chart_set_next_value2(lv_obj_t * obj, lv_chart_series_t * ser, lv_coord_
 
     ser->x_points[ser->start_point] = x_value;
     ser->y_points[ser->start_point] = y_value;
+    invalidate_point(obj, ser->start_point);
     ser->start_point = (ser->start_point + 1) % chart->point_cnt;
     invalidate_point(obj, ser->start_point);
+    lv_chart_refresh(obj);
+
 }
 
 void lv_chart_set_value_by_id(lv_obj_t * obj, lv_chart_series_t * ser, uint16_t id, lv_coord_t value)
@@ -567,7 +571,7 @@ void lv_chart_set_value_by_id(lv_obj_t * obj, lv_chart_series_t * ser, uint16_t 
 
     if(id >= chart->point_cnt) return;
     ser->y_points[id] = value;
-    invalidate_point(obj, id);
+    lv_chart_refresh(obj);
 }
 
 void lv_chart_set_value_by_id2(lv_obj_t * obj, lv_chart_series_t * ser, uint16_t id, lv_coord_t x_value,
@@ -585,7 +589,7 @@ void lv_chart_set_value_by_id2(lv_obj_t * obj, lv_chart_series_t * ser, uint16_t
     if(id >= chart->point_cnt) return;
     ser->x_points[id] = x_value;
     ser->y_points[id] = y_value;
-    invalidate_point(obj, id);
+    lv_chart_refresh(obj);
 }
 
 void lv_chart_set_ext_y_array(lv_obj_t * obj, lv_chart_series_t * ser, lv_coord_t array[])
@@ -716,7 +720,7 @@ static void lv_chart_event(const lv_obj_class_t * class_p, lv_event_t * e)
 
         p.x -= obj->coords.x1;
         uint32_t id = get_index_from_x(obj, p.x + lv_obj_get_scroll_left(obj));
-        if(id != (uint32_t)chart->pressed_point_id) {
+        if(id != chart->pressed_point_id) {
             invalidate_point(obj, id);
             invalidate_point(obj, chart->pressed_point_id);
             chart->pressed_point_id = id;
@@ -904,7 +908,7 @@ static void draw_series_line(lv_obj_t * obj, lv_draw_ctx_t * draw_ctx)
     if(LV_MIN(point_w, point_h) > line_dsc_default.width / 2) line_dsc_default.raw_end = 1;
     if(line_dsc_default.width == 1) line_dsc_default.raw_end = 1;
 
-    /*If there are at least as much points as pixels then draw only vertical lines*/
+    /*If there are mire points than pixels draw only vertical lines*/
     bool crowded_mode = chart->point_cnt >= w ? true : false;
 
     /*Go through all data lines*/
@@ -1325,8 +1329,7 @@ static void draw_cursors(lv_obj_t * obj, lv_draw_ctx_t * draw_ctx)
         cy += obj->coords.y1;
 
         lv_area_t point_area;
-        bool draw_point = point_w && point_h;
-        if(draw_point) {
+        if(point_w && point_h) {
             point_area.x1 = cx - point_w;
             point_area.x2 = cx + point_w;
             point_area.y1 = cy - point_h;
@@ -1346,11 +1349,7 @@ static void draw_cursors(lv_obj_t * obj, lv_draw_ctx_t * draw_ctx)
 
             lv_event_send(obj, LV_EVENT_DRAW_PART_BEGIN, &part_draw_dsc);
             lv_draw_line(draw_ctx, &line_dsc_tmp, &p1, &p2);
-
-            if(draw_point) {
-                lv_draw_rect(draw_ctx, &point_dsc_tmp, &point_area);
-            }
-
+            lv_draw_rect(draw_ctx, &point_dsc_tmp, &point_area);
             lv_event_send(obj, LV_EVENT_DRAW_PART_END, &part_draw_dsc);
         }
 
@@ -1362,11 +1361,7 @@ static void draw_cursors(lv_obj_t * obj, lv_draw_ctx_t * draw_ctx)
 
             lv_event_send(obj, LV_EVENT_DRAW_PART_BEGIN, &part_draw_dsc);
             lv_draw_line(draw_ctx, &line_dsc_tmp, &p1, &p2);
-
-            if(draw_point) {
-                lv_draw_rect(draw_ctx, &point_dsc_tmp, &point_area);
-            }
-
+            lv_draw_rect(draw_ctx, &point_dsc_tmp, &point_area);
             lv_event_send(obj, LV_EVENT_DRAW_PART_END, &part_draw_dsc);
         }
     }
@@ -1725,6 +1720,9 @@ static void invalidate_point(lv_obj_t * obj, uint16_t i)
         col_a.x1 -= block_gap;
 
         lv_obj_invalidate_area(obj, &col_a);
+    }
+    else if(chart->type == LV_CHART_TYPE_SCATTER) {
+        lv_obj_invalidate(obj);
     }
     else {
         lv_obj_invalidate(obj);

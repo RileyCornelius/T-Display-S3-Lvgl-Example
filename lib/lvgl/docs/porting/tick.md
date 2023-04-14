@@ -1,3 +1,7 @@
+```eval_rst
+.. include:: /header.rst 
+:github_url: |github_link_base|/porting/tick.md
+```
 # Tick interface
 
 LVGL needs a system tick to know elapsed time for animations and other tasks.

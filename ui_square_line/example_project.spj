@@ -941,8 +941,8 @@
                 "flags": 17,
                 "strtype": "OBJECT/Size",
                 "intarray": [
-                  98,
-                  84
+                  104,
+                  89
                 ],
                 "InheritedType": 7
               },
@@ -1265,8 +1265,52 @@
                       {
                         "nid": -1326066897,
                         "strtype": "SET OPACITY/Value",
-                        "integer": 255,
+                        "integer": 80,
                         "InheritedType": 6
+                      }
+                    ],
+                    "InheritedType": 10
+                  },
+                  {
+                    "nid": -2090708706,
+                    "strtype": "_custom/action",
+                    "strval": "MODIFY STATE",
+                    "childs": [
+                      {
+                        "nid": -934109625,
+                        "strtype": "MODIFY STATE/Name",
+                        "strval": "MODIFY STATE",
+                        "InheritedType": 10
+                      },
+                      {
+                        "nid": 625498931,
+                        "strtype": "MODIFY STATE/Call",
+                        "strval": "ModifyState( <{Object}>, lv.STATE.<{State}>, \"<{Action}>\")",
+                        "InheritedType": 10
+                      },
+                      {
+                        "nid": -913037736,
+                        "strtype": "MODIFY STATE/CallC",
+                        "strval": "_ui_state_modify( <{Object}>, LV_STATE_<{State}>, _UI_MODIFY_STATE_<{Action}>);",
+                        "InheritedType": 10
+                      },
+                      {
+                        "nid": -1843227092,
+                        "strtype": "MODIFY STATE/Object",
+                        "strval": "-",
+                        "InheritedType": 9
+                      },
+                      {
+                        "nid": 140419194,
+                        "strtype": "MODIFY STATE/State",
+                        "strval": "CHECKED",
+                        "InheritedType": 3
+                      },
+                      {
+                        "nid": -713436928,
+                        "strtype": "MODIFY STATE/Action",
+                        "strval": "ADD",
+                        "InheritedType": 3
                       }
                     ],
                     "InheritedType": 10
@@ -1581,9 +1625,9 @@
     "theme_color2": 0,
     "exportFolderPath": "C:\\Projects\\01-Current\\LVGL\\T-Display-S3-Lvgl-Example\\src\\ui",
     "projectExportFolderPath": "C:\\Projects\\01-Current\\LVGL\\T-Display-S3-Lvgl-Example\\ui_square_line\\export",
-    "backup_cnt": 18,
+    "backup_cnt": 22,
     "autosave_cnt": 0,
-    "lvgl_version": "8.3.4",
+    "lvgl_version": "8.2.0",
     "callfuncsexport": "DONT_EXPORT",
     "lvgl_include_path": "",
     "BitDepth": 16,

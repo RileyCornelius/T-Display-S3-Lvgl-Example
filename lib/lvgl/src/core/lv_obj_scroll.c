@@ -31,7 +31,7 @@
 /**********************
  *  STATIC PROTOTYPES
  **********************/
-static lv_res_t scroll_by_raw(lv_obj_t * obj, lv_coord_t x, lv_coord_t y);
+static void scroll_by_raw(lv_obj_t * obj, lv_coord_t x, lv_coord_t y);
 static void scroll_x_anim(void * obj, int32_t v);
 static void scroll_y_anim(void * obj, int32_t v);
 static void scroll_anim_ready_cb(lv_anim_t * a);
@@ -345,18 +345,14 @@ void lv_obj_scroll_by(lv_obj_t * obj, lv_coord_t dx, lv_coord_t dy, lv_anim_enab
     }
     else {
         /*Remove pending animations*/
-        lv_anim_del(obj, scroll_y_anim);
-        lv_anim_del(obj, scroll_x_anim);
-
-        lv_res_t res;
-        res = lv_event_send(obj, LV_EVENT_SCROLL_BEGIN, NULL);
-        if(res != LV_RES_OK) return;
-
-        res = scroll_by_raw(obj, dx, dy);
-        if(res != LV_RES_OK) return;
-
-        res = lv_event_send(obj, LV_EVENT_SCROLL_END, NULL);
-        if(res != LV_RES_OK) return;
+        bool y_del = lv_anim_del(obj, scroll_y_anim);
+        bool x_del = lv_anim_del(obj, scroll_x_anim);
+        scroll_by_raw(obj, dx, dy);
+        if(y_del || x_del) {
+            lv_res_t res;
+            res = lv_event_send(obj, LV_EVENT_SCROLL_END, NULL);
+            if(res != LV_RES_OK) return;
+        }
     }
 }
 
@@ -652,9 +648,9 @@ void lv_obj_readjust_scroll(lv_obj_t * obj, lv_anim_enable_t anim_en)
  *   STATIC FUNCTIONS
  **********************/
 
-static lv_res_t scroll_by_raw(lv_obj_t * obj, lv_coord_t x, lv_coord_t y)
+static void scroll_by_raw(lv_obj_t * obj, lv_coord_t x, lv_coord_t y)
 {
-    if(x == 0 && y == 0) return LV_RES_OK;
+    if(x == 0 && y == 0) return;
 
     lv_obj_allocate_spec_attr(obj);
 
@@ -663,9 +659,8 @@ static lv_res_t scroll_by_raw(lv_obj_t * obj, lv_coord_t x, lv_coord_t y)
 
     lv_obj_move_children_by(obj, x, y, true);
     lv_res_t res = lv_event_send(obj, LV_EVENT_SCROLL, NULL);
-    if(res != LV_RES_OK) return res;
+    if(res != LV_RES_OK) return;
     lv_obj_invalidate(obj);
-    return LV_RES_OK;
 }
 
 static void scroll_x_anim(void * obj, int32_t v)
@@ -751,7 +746,7 @@ static void scroll_area_into_view(const lv_area_t * area, lv_obj_t * child, lv_p
         x_scroll = left_diff;
         /*Do not let scrolling in*/
         lv_coord_t sl = lv_obj_get_scroll_left(parent);
-        if(sl - x_scroll < 0) x_scroll = 0;
+        if(sl + x_scroll > 0) x_scroll = 0;
     }
     else if(right_diff > 0) {
         x_scroll = -right_diff;

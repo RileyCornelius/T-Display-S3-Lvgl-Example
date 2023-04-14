@@ -28,7 +28,6 @@ extern "C" {
 void lv_example_gridnav_1(void);
 void lv_example_gridnav_2(void);
 void lv_example_gridnav_3(void);
-void lv_example_gridnav_4(void);
 
 /**********************
  *      MACROS

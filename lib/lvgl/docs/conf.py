@@ -18,16 +18,14 @@
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
-import subprocess
 import sys
-
+import subprocess
 sys.path.insert(0, os.path.abspath('./_ext'))
-
-from subprocess import PIPE, Popen
 
 import recommonmark
 from recommonmark.transform import AutoStructify
 from sphinx.builders.html import StandaloneHTMLBuilder
+from subprocess import Popen, PIPE
 
 # -- General configuration ------------------------------------------------
 
@@ -51,7 +49,7 @@ extensions = ['sphinx.ext.autodoc',
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
-# The default language to highlight source code in. The default is 'python'.
+# The default language to highlight source code in. The default is 'python'. 
 # The value should be a valid Pygments lexer name, see Showing code examples for more details.
 
 
@@ -90,8 +88,8 @@ language = None
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This patterns also effect to html_static_path and html_extra_path
-exclude_patterns = ['_build', 'doxygen_html', 'Thumbs.db', '.DS_Store',
-                    'README.md', 'lv_examples', 'out_html', 'env' ]
+exclude_patterns = ['_build', 'doxygen_html', 'Thumbs.db', '.DS_Store', 
+                    'README.md', 'lv_examples', 'out_html' ]
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'
@@ -116,22 +114,8 @@ html_theme_options = {
     'logo_only': True,
 }
 # For site map generation
-html_baseurl = f"https://docs.lvgl.io/{os.environ['LVGL_URLPATH']}/en/html/"
-
+html_baseurl = 'https://docs.lvgl.io/' + version + "/"
 sitemap_url_scheme = "{link}"
-
-#lvgl_github_url = f"https://github.com/lvgl/lvgl/blob/{os.environ['LVGL_GITCOMMIT']}/docs"
-
-#extlinks = {'github_link_base': (github_url + '%s', github_url)}
-
-html_context = {
-    'github_version': os.environ['LVGL_GITCOMMIT'],
-    'github_user': 'lvgl',
-    'github_repo': 'lvgl',
-    'display_github': True,
-    'conf_py_path': '/docs/'
-}
-
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -149,10 +133,6 @@ html_sidebars = {
         'searchbox.html',
     ]
 }
-
-html_js_files = [
-    'js/custom.js'
-]
 
 html_favicon = 'favicon.png'
 html_logo = 'logo_lvgl.png'
@@ -184,7 +164,7 @@ latex_elements = {
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
-
+    
     'inputenc': '',
     'utf8extra': '',
     'classoptions': ',openany,oneside',
